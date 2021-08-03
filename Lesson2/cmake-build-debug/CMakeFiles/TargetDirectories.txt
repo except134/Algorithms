@@ -1,0 +1,3 @@
+/home/except/Prj/My/Lessons/Algorithms/Lesson2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/except/Prj/My/Lessons/Algorithms/Lesson2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/except/Prj/My/Lessons/Algorithms/Lesson2/cmake-build-debug/CMakeFiles/Lesson2.dir
