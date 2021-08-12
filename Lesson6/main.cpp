@@ -83,11 +83,6 @@ void SwapDouble(double& a, double& b)
     b = t;
 }
 
-double f(double num)
-{
-    return sqrt(fabs(num)) + 5 * pow(num, 3);
-}
-
 void PrintArrayTPK(const double *array) {
     for (int index = 0; index < 11; ++index) {
         printf("%lf ", array[index]);
