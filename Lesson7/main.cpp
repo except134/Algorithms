@@ -94,6 +94,26 @@ void SortBlock(int* array, int arrayLength)
     for(int index = 0; index < numberOfBuckets; ++index)
         bucket[index][max] = 0;
 
+    for(int digit = 1; digit <= 1000000000; digit *= numberOfBuckets) {
+        for(int i = 0; i < max; ++i) {
+            if(array[i]%2 == 0) {
+                int dig = (array[i] / digit) % numberOfBuckets;
+                bucket[dig][bucket[dig][max]++] = array[i];
+                array[i] = -1;
+            }
+        }
+
+        int index = 0;
+        for(int x = 0; x < numberOfBuckets; ++x) {
+            for(int y = 0; y < bucket[x][max]; ++y) {
+                while(array[index]!=-1)
+                    index++;
+
+                array[index] = bucket[x][y];
+            }
+            bucket[x][max] = 0;
+        }
+    }
 }
 
 void Task1_2(bool task1)
