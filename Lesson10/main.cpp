@@ -77,9 +77,84 @@ void Task1()
 ///////////////
 // Задача 2
 
+struct Node
+{
+    int data = 0;
+    struct Node* next{ nullptr };
+};
+
+struct List
+{
+    Node* head{ nullptr };
+    int size = 0;
+};
+
+void AddListValue(List* list, int val)
+{
+    Node* temp = (Node*)malloc(sizeof(Node));
+
+    temp->data = val;
+    temp->next = list->head;
+
+    list->head = temp;
+    list->size++;
+}
+
+void FillListRandom(List* list, int count)
+{
+    for(int i = 0; i < count; i++)
+        AddListValue(list, rand()%100);
+}
+
+void PrintList(List* list)
+{
+    if(list->head == nullptr || list->size == 0) {
+        std::cout << std::endl;
+        return;
+    }
+
+    Node* current = list->head;
+
+    do {
+        std::cout << current->data << " ";
+        current = current->next;
+    } while (current != nullptr);
+
+    std::cout << std::endl;
+}
+
+void CopyList(List* src, List* dst)
+{
+    if(src->head == nullptr || src->size == 0) {
+        return;
+    }
+
+    Node* current = src->head;
+
+    do {
+        AddListValue(dst, current->data);
+        current = current->next;
+    } while (current != nullptr);
+}
+
 void Task2()
 {
     std::cout << std::endl << "Задача 2." << std::endl;
+
+    srand(time(0));
+
+    List list1, list2;
+    FillListRandom(&list1, 10);
+    std::cout << "Список 1: ";
+    PrintList(&list1);
+
+    std::cout << "Копируем список 1 в список 2." << std::endl;
+
+    CopyList(&list1, &list2);
+
+    std::cout << "Список 2: ";
+    PrintList(&list2);
+
 }
 
 ///////////////
