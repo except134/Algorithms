@@ -234,7 +234,7 @@ void Task2()
 int main()
 {
     Task1();
-//    Task2();
+    Task2();
 
     return 0;
 }
