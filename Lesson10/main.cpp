@@ -77,64 +77,129 @@ void Task1()
 ///////////////
 // Задача 2
 
-struct Node
+class Node
 {
+public:
+    Node(int val) : data(val) {}
+
+public:
     int data = 0;
-    struct Node* next{ nullptr };
+    Node* next{ nullptr };
 };
 
-struct List
+class List
 {
+public:
+    ~List()
+    {
+        Node* p = head;
+        while (p) {
+            Node* t = p;
+            p = p->next;
+            delete t;
+        }
+    }
+
+    bool IsEmpty() { return head == nullptr; }
+
+    void Push(int val)
+    {
+        Node* p = new Node(val);
+        if (IsEmpty()) {
+            head = p;
+            tail = p;
+            return;
+        }
+        tail->next = p;
+        tail = p;
+    }
+
+    void Print(bool printEOL = true)
+    {
+        if (IsEmpty())
+            return;
+
+        Node* p = head;
+        while (p) {
+            std::cout << p->data << " ";
+            p = p->next;
+        }
+
+        if(printEOL)
+            std::cout << std::endl;
+    }
+
+    void CopyTo(List* list)
+    {
+        if (IsEmpty())
+            return;
+
+        Node* p = head;
+        while (p) {
+            list->Push(p->data);
+            p = p->next;
+        }
+    }
+
+    void Sort()
+    {
+        Node *firstNum, *secondNum, *ptr, *hdr = nullptr;
+
+        for(Node* i = head; i != nullptr; ) {
+            firstNum = i;
+            i = i->next;
+            secondNum = hdr;
+            for(ptr = nullptr; (secondNum != nullptr) && (firstNum->data > secondNum->data); ) {
+                ptr = secondNum;
+                secondNum = secondNum->next;
+            }
+
+            if(ptr == nullptr) {
+                firstNum->next = hdr;
+                hdr       = firstNum;
+            } else {
+                firstNum->next = secondNum;
+                ptr->next = firstNum;
+            }
+        }
+        if(hdr != nullptr)
+            head = hdr;
+    }
+
+    bool IsEqual(List* list)
+    {
+        Node* curVal = head;
+        Node* dstVal = list->head;
+
+        while (curVal) {
+            if(curVal->data != dstVal->data)
+                return false;
+
+            curVal = curVal->next;
+            dstVal = dstVal->next;
+        }
+
+        return true;
+    }
+
+    bool IsSort()
+    {
+        List temp;
+        CopyTo(&temp);
+
+        temp.Sort();
+        return IsEqual(&temp);
+    }
+
+private:
     Node* head{ nullptr };
-    int size = 0;
+    Node* tail{ nullptr };
 };
-
-void AddListValue(List* list, int val)
-{
-    Node* temp = (Node*)malloc(sizeof(Node));
-
-    temp->data = val;
-    temp->next = list->head;
-
-    list->head = temp;
-    list->size++;
-}
 
 void FillListRandom(List* list, int count)
 {
     for(int i = 0; i < count; i++)
-        AddListValue(list, rand()%100);
-}
-
-void PrintList(List* list)
-{
-    if(list->head == nullptr || list->size == 0) {
-        std::cout << std::endl;
-        return;
-    }
-
-    Node* current = list->head;
-
-    do {
-        std::cout << current->data << " ";
-        current = current->next;
-    } while (current != nullptr);
-
-    std::cout << std::endl;
-}
-
-void CopyList(List* src, List* dst)
-{
-    if(src->head == nullptr || src->size == 0) {
-        return;
-    }
-
-    Node* current = src->head;
-
-    do {
-        AddListValue(dst, current->data);
-        current = current->next;
-    } while (current != nullptr);
+        list->Push(rand()%100);
 }
 
 void Task2()
@@ -146,15 +211,14 @@ void Task2()
     List list1, list2;
     FillListRandom(&list1, 10);
     std::cout << "Список 1: ";
-    PrintList(&list1);
+    list1.Print();
 
     std::cout << "Копируем список 1 в список 2." << std::endl;
 
-    CopyList(&list1, &list2);
+    list1.CopyTo(&list2);
 
     std::cout << "Список 2: ";
-    PrintList(&list2);
-
+    list2.Print();
 }
 
 ///////////////
@@ -163,6 +227,22 @@ void Task2()
 void Task3()
 {
     std::cout << std::endl << "Задача 3." << std::endl;
+
+    srand(time(0));
+
+    List list;
+    FillListRandom(&list, 10);
+
+    std::cout << "Список: ";
+    list.Print(false);
+    std::cout << (list.IsSort() ? "отсортирован." : "не отсортирован") << std::endl;
+
+    std::cout << "Сортируем" << std::endl;
+    list.Sort();
+
+    std::cout << "Список: ";
+    list.Print(false);
+    std::cout << (list.IsSort() ? "отсортирован." : "не отсортирован") << std::endl;
 }
 
 int main()
