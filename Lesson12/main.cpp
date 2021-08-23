@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <iostream>
 #include <cstring>
+#include <unistd.h>
+#include <random>
 
 class Node
 {
@@ -224,7 +226,7 @@ private:
 
         Node* cur = start;
 
-        while((cur != nullptr) && (cur->value != val)) {
+        while((cur != nullptr) /*&& (cur->value != val)*/) {
             if(val < cur->value) {
                 if(cur->left == nullptr) {
                     Attach(cur, cur->left, val);
@@ -345,53 +347,48 @@ private:
 ///////////////
 // Задача 1
 
+int GetRandomInt(int minVal, int maxVal)
+{
+    std::random_device rd;
+    static std::mt19937 ms(rd());
+    std::uniform_int_distribution<> uid(minVal, maxVal);
+    return uid(ms);
+}
+
 void Task1()
 {
+    const int COUNT_OF_TREES = 50;
+    const int COUNT_OF_NUMBERS = 10000;
+
     std::cout << "Задача 1." << std::endl;
 
-    Tree t(7);
-    t.Add(5);
-    t.Add(9);
-    t.Add(6);
-    t.Add(4);
-    t.Add(11);
-    t.Add(8);
-    t.Add(2);
-    t.Add(10);
-    t.Add(19);
-    t.Add(21);
-    t.Add(22);
+    //srand(time(0));
 
-    t.Print();
+    Tree trees[COUNT_OF_TREES];
 
-    std::cout << std::endl;
+    int balanced = 0;
 
-    std::cout << "В левом дереве:  " << t.GetLeftCount() << " элементов." << std::endl;
-    std::cout << "В правом дереве: " << t.GetRightCount() << " элементов." << std::endl;
+    for(int t = 0; t < COUNT_OF_TREES; t++) {
+        for(int i = 0; i < COUNT_OF_NUMBERS; i++) {
+            //trees[t].Add(rand()%COUNT_OF_NUMBERS);
+            trees[t].Add(GetRandomInt(0,10000000));
+        }
 
-    if(std::abs(t.GetLeftCount()-t.GetRightCount())>1)
-        std::cout << "Дерево не сбалансировано." << std::endl;
-    else
-        std::cout << "Дерево сбалансировано." << std::endl;
+//        trees[t].Print();
+        std::cout << "Дерево " << t+1 << ": слева = " << trees[t].GetLeftCount();
+        std::cout << ", справа = " << trees[t].GetRightCount();
+        std::cout << ", всего = " << trees[t].GetRootCount() << std::endl;
 
-    /*
-    std::cout << "Pre-order" << std::endl;
-    t.PrintPre();
-    std::cout << "In-order" << std::endl;
-    t.PrintIn();
-    std::cout << "Post-order" << std::endl;
-    t.PrintPost();
+        // За разницу берем 1000, чисто для теста, так как шансов, что выпадет сбалансированное дерево крайне мало.
+        if(std::abs(trees[t].GetLeftCount() - trees[t].GetRightCount()) <= 1000)
+            balanced++;
+    }
 
-    std::cout << "In-order, using Get(int)" << std::endl;
-    for(int i=1; i<=t.Size(); ++i)
-        std::cout << t.Get(i) << " ";
+    std::cout << "Сбалансированных деревьев:  " << balanced << std::endl;
+    std::cout << "Не сбалансированных деревьев:  " << COUNT_OF_TREES - balanced << std::endl;
 
-    t.Remove(2);
-    t.Print();
+    std::cout << "Процент сбалансированных деревьев:  " << (balanced * 100 / COUNT_OF_TREES) << std::endl;
 
-    t.Remove(7);
-    t.Print();
-*/
 }
 
 ///////////////
