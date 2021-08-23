@@ -167,6 +167,21 @@ public:
         std::cout << std::endl;
     }
 
+    int GetRootCount() const
+    {
+        return Size();
+    }
+
+    int GetLeftCount() const
+    {
+        return root->left ? root->left->count : 0;
+    }
+
+    int GetRightCount() const
+    {
+        return root->right ? root->right->count : 0;
+    }
+
 private:
     void MakeNewRoot(int val)
     {
@@ -344,11 +359,22 @@ void Task1()
     t.Add(2);
     t.Add(10);
     t.Add(19);
+    t.Add(21);
+    t.Add(22);
 
     t.Print();
 
     std::cout << std::endl;
 
+    std::cout << "В левом дереве:  " << t.GetLeftCount() << " элементов." << std::endl;
+    std::cout << "В правом дереве: " << t.GetRightCount() << " элементов." << std::endl;
+
+    if(std::abs(t.GetLeftCount()-t.GetRightCount())>1)
+        std::cout << "Дерево не сбалансировано." << std::endl;
+    else
+        std::cout << "Дерево сбалансировано." << std::endl;
+
+    /*
     std::cout << "Pre-order" << std::endl;
     t.PrintPre();
     std::cout << "In-order" << std::endl;
@@ -365,7 +391,7 @@ void Task1()
 
     t.Remove(7);
     t.Print();
-
+*/
 }
 
 ///////////////
