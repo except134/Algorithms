@@ -16,6 +16,57 @@ int GetRandomInt(int minVal, int maxVal)
     return uid(ms);
 }
 
+class Stack
+{
+public:
+    Stack(){};
+
+    ~Stack()
+    {
+        if (count > 0)
+            delete[] data;
+    }
+
+    void Push(int val)
+    {
+        int* temp = data;
+        data = new int[count + 1];
+        count++;
+
+        for (int i = 0; i < count - 1; i++)
+            data[i] = temp[i];
+
+        data[count - 1] = val;
+
+        if (count > 1)
+            delete[] temp;
+    }
+
+    int Pop()
+    {
+        if (count == 0)
+            return 0;
+        count--;
+        return data[count];
+    }
+
+    void Print()
+    {
+        int* temp = data;
+
+        if (count == 0)
+            std::cout << "Стек пустой." << std::endl;
+
+        for (int i = 0; i < count; i++) {
+            std::cout << *temp++;
+        }
+        std::cout << std::endl;
+    }
+private:
+    int* data{};
+    int count = 0;
+};
+
 ///////////////
 // Задача 1
 
