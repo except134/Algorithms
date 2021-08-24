@@ -35,7 +35,7 @@ public:
         if(cur != nullptr)
             std::cout << cur->value << '[' << cur->count << ']' << std::endl;
         else
-            std::cout << "|" << std::endl;
+            std::cout << "+" << std::endl;
 
         if(cur != nullptr)
             cur->left->Print(level + 1);
@@ -345,7 +345,7 @@ private:
 };
 
 ///////////////
-// Задача 1
+//
 
 int GetRandomInt(int minVal, int maxVal)
 {
@@ -355,6 +355,9 @@ int GetRandomInt(int minVal, int maxVal)
     return uid(ms);
 }
 
+///////////////
+// Задача 1
+
 void Task1()
 {
     const int COUNT_OF_TREES = 50;
@@ -362,19 +365,15 @@ void Task1()
 
     std::cout << "Задача 1." << std::endl;
 
-    //srand(time(0));
-
     Tree trees[COUNT_OF_TREES];
 
     int balanced = 0;
 
     for(int t = 0; t < COUNT_OF_TREES; t++) {
         for(int i = 0; i < COUNT_OF_NUMBERS; i++) {
-            //trees[t].Add(rand()%COUNT_OF_NUMBERS);
             trees[t].Add(GetRandomInt(0,10000000));
         }
 
-//        trees[t].Print();
         std::cout << "Дерево " << t+1 << ": слева = " << trees[t].GetLeftCount();
         std::cout << ", справа = " << trees[t].GetRightCount();
         std::cout << ", всего = " << trees[t].GetRootCount() << std::endl;
@@ -397,6 +396,29 @@ void Task1()
 void Task2()
 {
     std::cout << std::endl << "Задача 2." << std::endl;
+
+    const int COUNT_OF_NUMBERS = 10;
+
+    Tree t;
+
+    for(int i = 0; i < COUNT_OF_NUMBERS; i++) {
+        t.Add(GetRandomInt(0,100));
+    }
+
+    t.Print();
+
+    unsigned int num = 0;
+    std::cout << "Введите число для поиска: ";
+    std::cin >> num;
+
+    std::cout << "Число " << num;
+
+    if(t.Find(num)) {
+        std::cout << " найдено." << std::endl;
+    } else {
+        std::cout << " не найдено." << std::endl;
+    }
+
 }
 
 int main()
